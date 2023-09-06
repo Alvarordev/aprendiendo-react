@@ -7,7 +7,7 @@ const TwitterFollowCard = ({ name, userName, initialFollowing }) => {
     setFollowing(!following);
   };
 
-  let text = following ? "siguiendo" : "seguir"
+  let text = following ? "Siguiendo" : "Seguir"
 
   return (
     <main className="tw-followCard">
@@ -28,7 +28,7 @@ const TwitterFollowCard = ({ name, userName, initialFollowing }) => {
           }
         >
           <span className="tw-followCard-text">{text}</span>
-          <span className="tw-followCard-stopFollow">Dejar de Seguir</span>
+          <span className="tw-followCard-stopFollow">Dejar de seguir</span>
         </button>
       </aside>
     </main>

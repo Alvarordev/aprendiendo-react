@@ -21,6 +21,28 @@ const Square = ({children, index, isSelected, updateBoard}) => {
   )
 }
 
+const WinnerModal = ({winner, resetGame}) => {
+  if (winner === null) return null
+
+  const winnerText = winner === false ? 'Empate' : 'Gano'
+
+  return (
+    <section className='winner'>
+      <div className='text'>
+        <h2>{winnerText}</h2>
+
+        <header className='win'>
+          {winner && <Square>{winner}</Square>}
+        </header>
+
+        <footer>
+          <button onClick={resetGame}>Comenzar de nuevo</button>
+        </footer>
+      </div>
+    </section>
+  )
+}
+
 const WINNING_COMBOS = [
   [0,1,2],
   [3,4,5],
@@ -58,13 +80,19 @@ function App() {
     newBoard[index] = turn
     setBoard(newBoard)
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
-    setTurn(newTurn)
+    setTurn(newTurn) 
     const newWinner = checkWinner(newBoard)
     if (newWinner) {
       setWinner(newWinner);
     } else if (checkEndGame(newBoard)) {
       setWinner(false) // empate
     }
+  }
+
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
   }
 
   return (
@@ -85,6 +113,8 @@ function App() {
           {TURNS.O}
         </Square>
       </section>
+
+      <WinnerModal winner={winner} resetGame={resetGame}/>
     </main>
   )
 }

@@ -1,73 +1,12 @@
 import { useState } from "react";
+import confetti from 'canvas-confetti'
 import "./App.css";
+import { Square } from "./components/Square";
+import { WinnerModal } from "./components/WinnerModal";
+import { checkEndGame, checkWinner } from "./logic/board";
+import { TURNS } from "./constants";
 
-const TURNS = {
-  X: "❌",
-  O: "⭕",
-};
 
-const Square = ({ children, index, isSelected, updateBoard }) => {
-  const handleClick = () => {
-    updateBoard(index);
-  };
-
-  const className = `square ${isSelected ? "is-selected" : ""}`;
-
-  return (
-    <div onClick={handleClick} className={className}>
-      {children}
-    </div>
-  );
-};
-
-const WinnerModal = ({ winner, resetGame }) => {
-  if (winner === null) return null;
-
-  const winnerText = winner === false ? "Empate" : "Gano";
-
-  return (
-    <section className="winner">
-      <div className="text">
-        <h2>{winnerText}</h2>
-
-        <header className="win">{winner && <Square>{winner}</Square>}</header>
-
-        <footer>
-          <button onClick={resetGame}>Comenzar de nuevo</button>
-        </footer>
-      </div>
-    </section>
-  );
-};
-
-const WINNING_COMBOS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
-
-const checkWinner = (boardToCheck) => {
-  for (const combo of WINNING_COMBOS) {
-    const [a, b, c] = combo;
-    if (
-      boardToCheck[a] &&
-      boardToCheck[a] === boardToCheck[b] &&
-      boardToCheck[a] === boardToCheck[c]
-    ) {
-      return boardToCheck[a];
-    }
-  }
-  return null;
-};
-
-const checkEndGame = (newBoard) => {
-  return newBoard.every((square) => square !== null)
-}
 
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -83,6 +22,7 @@ function App() {
     setTurn(newTurn);
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
+      confetti()
       setWinner(newWinner);
     } else if (checkEndGame(newBoard)) {
       setWinner(false); // empate
@@ -101,7 +41,7 @@ function App() {
       <section className="game">
         {board.map((square, index) => (
           <Square key={index} index={index} updateBoard={updateBoard}>
-            {board[index]}
+            {square}
           </Square>
         ))}
       </section>

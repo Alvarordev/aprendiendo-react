@@ -1,0 +1,12 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: system-ui;
+}
+
+img {
+    max-width: 500px;
+    height: auto;
+}

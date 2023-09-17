@@ -11,7 +11,7 @@ const App = () => {
     <main>
       <h1>Aplicacion de gatos</h1>
       <button onClick={refreshFact}>Get New Fact</button>
-      <p>{fact}</p>
+      {fact && <p>{fact}</p>}
       {imageUrl && <img src={imageUrl} alt='Random cat fact image' />}
 
       <Otro />

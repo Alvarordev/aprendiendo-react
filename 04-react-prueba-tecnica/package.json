@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@playwright/test": "^1.38.0",
+    "@types/node": "^20.6.2",
+    "eslint": "^8.49.0",
+    "prettier": "^2.8.8",
     "vite": "^4.4.5"
   },
   "dependencies": {

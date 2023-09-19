@@ -16,7 +16,11 @@ main {
     display: flex;
     justify-content: center;
     width: 100%;
-  }
+}
+
+header {
+    padding-bottom: 10px;
+}
 
 .movies {
   list-style: none;
@@ -28,4 +32,13 @@ main {
 
   width: 100%;
   gap: 32px;
+}
+
+.movies {
+    text-align: center;
+}
+
+.movies h3, .movies p, .movies img {
+    margin: 0;
+    padding: 6px 0 6px 0;
 }

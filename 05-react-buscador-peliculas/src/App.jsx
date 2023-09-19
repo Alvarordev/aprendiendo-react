@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './app.css'
 import useMovies from './hooks/useMovies'
 
 const useSearch = () => {
   const [search, updateSearch] = useState('')
-  const [error, setError] = useState('')
+  const [error, setError] = useState(null)
+  const isFirstInput = useRef(true)
   
   useEffect(() => {
+    if(isFirstInput.current){
+      isFirstInput.current = search === ''
+      return
+    }
+
     if(search === ''){
       setError('No se puede buscar una pelicula vacia')
       return
@@ -20,8 +26,8 @@ const useSearch = () => {
 
 
 function App() {
-  const { mappedMovies } = useMovies()
   const { search, updateSearch, error } = useSearch()
+  const { movies, getMovies } = useMovies()
   /*
     //Obtener todos los campos de un formulario de manera nativa en JS
     const handleSubmit = (event) => {
@@ -39,7 +45,7 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log({search})
+    getMovies({search})
   }
 
 
@@ -55,7 +61,7 @@ function App() {
       </header>
       <main>
         <ul className='movies'>
-          {mappedMovies ? mappedMovies.map(({id, title, year ,poster}) => (
+          {movies ? movies.map(({id, title, year ,poster}) => (
             <li key={id}>
               <h3>{title}</h3>
               <p>{year}</p>

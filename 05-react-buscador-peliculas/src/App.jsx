@@ -1,6 +1,8 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import './app.css'
 import useMovies from './hooks/useMovies'
+import { Movies } from './components/movies'
+import debounce from 'just-debounce-it'
 
 const useSearch = () => {
   const [search, updateSearch] = useState('')
@@ -26,8 +28,10 @@ const useSearch = () => {
 
 
 function App() {
+  const [sort, setSort] = useState(false)
   const { search, updateSearch, error } = useSearch()
-  const { movies, getMovies } = useMovies()
+  const { movies, loading, getMovies } = useMovies({ search, sort })
+
   /*
     //Obtener todos los campos de un formulario de manera nativa en JS
     const handleSubmit = (event) => {
@@ -38,14 +42,27 @@ function App() {
     //if(query === '') return setError('no se ingreso ninguna pelicula')
   }*/
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedGetMovies = useCallback(
+    debounce(search => {
+      getMovies({ search })
+    }, 300)
+    , [getMovies]
+  ) 
+
   const handleChange = (event) => {
-    const newQuery = event.target.value //El estado de react es asincrono
-    updateSearch(newQuery)
+    const newSearch = event.target.value //El estado de react es asincrono
+    updateSearch(newSearch)
+    debouncedGetMovies(newSearch)
+  }
+
+  const handleSort = () => {
+    setSort(!sort)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    getMovies({search})
+    getMovies({ search })
   }
 
 
@@ -55,20 +72,14 @@ function App() {
         <h1>Buscador de Peliculas</h1>
           <form onSubmit={handleSubmit} className="form">
             <input onChange={handleChange} value={search} name='search' type="text" placeholder="Avengers, 1914, The Witcher..." />
+            <input type="checkbox" onChange={handleSort} checked={sort} />
             <button type='submit'>Buscar</button>
           </form>
           {error && <p style={{color: 'red'}}>{error}</p>}
       </header>
       <main>
-        <ul className='movies'>
-          {movies ? movies.map(({id, title, year ,poster}) => (
-            <li key={id}>
-              <h3>{title}</h3>
-              <p>{year}</p>
-              <img src={poster} alt={title} />
-            </li>
-          )) : <h2>No se encontraron resultados para esta busqueda</h2>}
-        </ul>
+        {loading ? <p>Cargando...</p> : <Movies movies={movies}/>
+}
       </main> 
     </div>
   )

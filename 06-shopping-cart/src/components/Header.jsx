@@ -1,9 +1,11 @@
+import Filters from "./Filters";
+
 // eslint-disable-next-line react/prop-types
-const Header = ({ children }) => {
+const Header = () => {
     return ( 
         <div>
             <h1>React Shop 🛒</h1>
-            { children }
+            <Filters/>
         </div>
      );
 }

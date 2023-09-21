@@ -1,35 +1,22 @@
 import './App.css'
-import Products from './components/products'
+import Products from './components/Products'
 import { products as initialProducts } from './mocks/products.json'
 import Header from './components/Header'
-import Filters from './components/Filters'
-import { useContext } from 'react'
-import { FiltersContext } from './context/filters'
+import { useFilters } from './hooks/useFilters'
+import Cart from './components/Cart'
+import { CartProvider } from './context/cart'
 
 function App() {
-  const {filters, setFilters} = useContext(FiltersContext)
-
-  const filterProducts = (products) => {
-    return products.filter(product => {
-      return (
-        product.price >= filters.minPrice && 
-        (
-          filters.category === 'all' || 
-          product.category === filters.category
-        )
-      )
-    })
-  }
+  const {filterProducts} = useFilters()
 
   const filteredProducts = filterProducts(initialProducts)
 
   return (
-    <>
-      <Header>
-        <Filters onChange={setFilters}/>
-      </Header>
+    <CartProvider>
+      <Header />
+      <Cart />
       <Products products={filteredProducts} />
-    </>
+    </CartProvider>
   )
 }
 

@@ -1,22 +1,25 @@
-import { useEffect } from 'react'
+/* eslint-disable react/prop-types */
 import './App.css'
 import HomePage from './pages/Home'
+import AboutPage from './pages/About'
+import Router from './Router'
 
-function navigate (href) {
-  window.history.pushState({}, '', href)
-  
-  const navigationEvent = new Event('pushstate')
-  window.dispatchEvent(navigationEvent)
-}
-
-
+const routes = [
+  {
+    path: '/',
+    Component: HomePage
+  },
+  {
+    path: '/about',
+    Component: AboutPage
+  }
+]
 function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
-
+  
 
   return (
     <main>
-      {currentPath === '/' && <HomePage /> }
+      <Router routes={routes} />
     </main>
   )
 }

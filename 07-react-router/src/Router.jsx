@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
+import { Children, useEffect, useState } from "react"
 import { EVENTS } from "./consts"
 import { match } from 'path-to-regexp'
+import { getCurrentPath } from "./utils"
 
 // eslint-disable-next-line react/prop-types
-export default function Router({ routes = [], defaultComponent: DefaultComponent = () => <h1>404</h1> }) {
-    const [currentPath, setCurrentPath] = useState(window.location.pathname)
+export default function Router({ children, routes = [], defaultComponent: DefaultComponent = () => <h1>404</h1> }) {
+    const [currentPath, setCurrentPath] = useState(getCurrentPath())
   
     useEffect(() => {
       const onLocationChange = () => {
-        setCurrentPath(window.location.pathname)
+        setCurrentPath(getCurrentPath())
       }
   
       window.addEventListener(EVENTS.PUSHSTATE, onLocationChange)
@@ -18,14 +19,21 @@ export default function Router({ routes = [], defaultComponent: DefaultComponent
         window.removeEventListener(EVENTS.PUSHSTATE, onLocationChange)
         window.removeEventListener(EVENTS.POPSTATE, onLocationChange)
       }
-    }, [])
+    }, []) 
+
+    const routesFromChildren = Children.map(children, ({ props, type}) => {
+        const { name } = type
+        const isRoute = name === 'Route'
+
+        return isRoute ? props : null
+    })
+
+    const routesToUse = routes.concat(routesFromChildren).filter(Boolean)
   
     let routeParams 
 
-    const Page = routes.find(({ path }) => {
+    const Page = routesToUse.find(({ path }) => {
         if (path === currentPath) return true
-
-        
 
         // hemos usado path-to-regexp
         // para poder detectar rutas dinamicas como por ejemplo

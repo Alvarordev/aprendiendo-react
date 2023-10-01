@@ -1,33 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useReducer } from 'react'
 import './App.css'
+import { Action, type State } from './types'
+
+const initialState: State = {
+  fromLanguage: 'auto',
+  toLanguage: 'en',
+  fromText: '',
+  result: '',
+  loading: false
+}
+
+const reducer = (state: State, action: Action) => {
+  const { type } = action
+
+  if(type === 'INTERCHANGE_LANGUAGES'){
+    return {
+      ...state,
+      fromLanguange: state.toLanguage,
+      toLanguange: state.fromLanguage,
+      result: ''
+    }
+  }
+
+  if(type === 'SET_FROM_LANGUAGE') {
+    return {
+      ...state,
+      fromLanguange: action.payload,
+      result: ''
+    }
+  }
+
+  if(type === 'SET_TO_LANGUAGE') {
+    return {
+      ...state,
+      toLanguange: action.payload
+    }
+  }
+
+  if(type === 'SET_FROM_TEXT') {
+    return {
+      ...state,
+      fromText: action.payload,
+      loading: true
+    }
+  }
+
+  if(type === 'SET_FROM_RESULT') {
+    return {
+      ...state,
+      result: action.payload,
+      loading: true
+    }
+  }
+
+  return state
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const 
+  [{fromLanguage, toLanguage, fromText, result, loading}, dispatch] = useReducer(reducer, initialState)
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Google Translate</h1>
     </>
   )
 }

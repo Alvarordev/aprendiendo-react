@@ -11,7 +11,7 @@ export interface State {
 export type Action =
     | { type: 'SET_FROM_LANGUAGE', payload: FromLanguage}
     | { type: 'INTERCHANGE_LANGUAGES'}
-    | { type: 'SET_TO_LANGUAGE', payload: FromLanguage}
+    | { type: 'SET_TO_LANGUAGE', payload: Languages}
     | { type: 'SET_FROM_TEXT', payload: string}
     | { type: 'SET_FROM_RESULT', payload: string}
 

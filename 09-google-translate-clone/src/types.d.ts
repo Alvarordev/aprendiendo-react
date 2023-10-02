@@ -1,5 +1,9 @@
 import { AUTO_LANGUAGE, LANGUAGES } from "./consts"
 
+export type Languages = keyof typeof LANGUAGES
+export type AutoLanguage = typeof AUTO_LANGUAGE
+export type FromLanguage = Languages | AutoLanguage
+
 export interface State {
     fromLanguage: FromLanguage 
     toLanguage: Languages
@@ -15,6 +19,7 @@ export type Action =
     | { type: 'SET_FROM_TEXT', payload: string}
     | { type: 'SET_FROM_RESULT', payload: string}
 
-export type Languages = keyof typeof LANGUAGES
-export type AutoLanguage = typeof AUTO_LANGUAGE
-export type FromLanguage = Languages | AutoLanguage
+export enum SectionType {
+    From = 'from',
+    To = 'to'
+}

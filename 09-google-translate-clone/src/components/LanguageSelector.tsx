@@ -21,7 +21,7 @@ const LanguageSelector: React.FC<Props> = ({ onChange, value, type}) => {
         <select className='form-select' onChange={handleChange} value={value}>
             {type === SectionType.From && <option value={AUTO_LANGUAGE}>Detectar Idioma</option>}
             {Object.entries(LANGUAGES).map(([key, literal]) => (
-                <option value={key}>
+                <option key={key} value={key}>
                     {literal}
                 </option>
             ))}

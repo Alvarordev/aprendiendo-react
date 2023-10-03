@@ -17,33 +17,50 @@ const reducer = (state: State, action: Action) => {
 
         if (state.fromLanguage === AUTO_LANGUAGE) return state
 
+        const loading = state.fromText !== ''
+
         return {
         ...state,
         fromLanguage: state.toLanguage,
         toLanguage: state.fromLanguage,
-        result: ''
+        result: '',
+        loading
         }
     }
 
     if (type === 'SET_FROM_LANGUAGE') {
+
+        const loading = state.fromText !== ''
+
         return {
         ...state,
         fromLanguage: action.payload,
+        loading,
+        result: ''
         }
     }
 
     if(type === 'SET_TO_LANGUAGE') {
+
+        const loading = state.fromText !== ''
+
         return {
         ...state,
-        toLanguage: action.payload
+        toLanguage: action.payload,
+        loading,
+        result: ''
         }
     }
 
     if(type === 'SET_FROM_TEXT') {
+
+        const loading = action.payload !== ''
+
         return {
         ...state,
         fromText: action.payload,
-        loading: true
+        loading,
+        result: ''
         }
     }
 

@@ -13,7 +13,7 @@ const TextArea: React.FC<Props> = ({ loading, type, value, onChange}) => {
             value={value} 
             cols={20}   
             rows={8}
-            disabled={type === 'to'}
+            disabled={type === 'to' && loading === true}
             placeholder={type === 'from' ? 'Introducir texto' : loading ? 'Traduciendo..' : 'Traduccion'}
             onChange={handleChange}
         >
